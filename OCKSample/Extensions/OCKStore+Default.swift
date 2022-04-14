@@ -117,7 +117,7 @@ extension OCKStore {
         stretch.asset = "figure.walk"
 
         try await addTasksIfNotPresent([nausea, doxylamine, kegels, stretch])
-        try await addConsent()
+        try await addOnboardingTask()
 
         var contact1 = OCKContact(id: "jane", givenName: "Jane",
                                   familyName: "Daniels", carePlanUUID: nil)
@@ -156,7 +156,7 @@ extension OCKStore {
         try await addContactsIfNotPresent([contact1, contact2])
     }
 
-    func addConsent() async throws {
+    func addOnboardingTask() async throws {
         let onboardSchedule = OCKSchedule.dailyAtTime(
                     hour: 0, minutes: 0,
                     start: Date(), end: nil,
