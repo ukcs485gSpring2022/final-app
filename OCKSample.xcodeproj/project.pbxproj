@@ -12,6 +12,7 @@
 		70077597252228E900EC0EDA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70077596252228E900EC0EDA /* User.swift */; };
 		7007759B252229C900EC0EDA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70077596252228E900EC0EDA /* User.swift */; };
 		70123069280830A1003F5ECE /* Consent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70123068280830A1003F5ECE /* Consent.swift */; };
+		701230D6280CCFC4003F5ECE /* CustomFeaturedContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701230D5280CCFC4003F5ECE /* CustomFeaturedContentView.swift */; };
 		70202EC12807333900CF73FB /* CareKit in Frameworks */ = {isa = PBXBuildFile; productRef = 70202EC02807333900CF73FB /* CareKit */; };
 		70202EC32807333900CF73FB /* CareKitFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 70202EC22807333900CF73FB /* CareKitFHIR */; };
 		70202EC52807333A00CF73FB /* CareKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 70202EC42807333A00CF73FB /* CareKitUI */; };
@@ -189,6 +190,7 @@
 		51F6343923D2877B00FE576E /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		70077596252228E900EC0EDA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		70123068280830A1003F5ECE /* Consent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Consent.swift; sourceTree = "<group>"; };
+		701230D5280CCFC4003F5ECE /* CustomFeaturedContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFeaturedContentView.swift; sourceTree = "<group>"; };
 		70202EC9280746E900CF73FB /* ResearchKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ResearchKit.xcodeproj; path = ResearchKit/ResearchKit.xcodeproj; sourceTree = "<group>"; };
 		70202ED52807529900CF73FB /* Surveys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surveys.swift; sourceTree = "<group>"; };
 		70308885258273D400FFABB6 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 				7036E4C3256E0A48006E9A3C /* CareView.swift */,
 				70F03ABA2789071400E5AFB4 /* CareViewModel.swift */,
 				E7C37848228F887800E982D8 /* TipView.swift */,
+				701230D5280CCFC4003F5ECE /* CustomFeaturedContentView.swift */,
 			);
 			path = Care;
 			sourceTree = "<group>";
@@ -885,6 +888,7 @@
 				70F921AE27CABE7700368CEC /* RemoteSessionDelegate.swift in Sources */,
 				70F03A952786093B00E5AFB4 /* OCKHealthKitPassthroughStore+Default.swift in Sources */,
 				7036E4BF256DA089006E9A3C /* LoginViewModel.swift in Sources */,
+				701230D6280CCFC4003F5ECE /* CustomFeaturedContentView.swift in Sources */,
 				7036E517256F2413006E9A3C /* ProfileViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
