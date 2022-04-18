@@ -6,9 +6,15 @@ Name of your final project
 
 ## Description
 <!--
-Give a short description on what your project accomplishes and what tools is uses. Basically, what problems does it solve
+Give a short description on what your project accomplishes and what tools is uses. Basically, what problems does it solve and why it's different from other apps in the app store.
 -->
 An example application of [CareKit](https://github.com/carekit-apple/CareKit)'s OCKSample synchronizing CareKit data to the Cloud via [ParseCareKit](https://github.com/netreconlab/ParseCareKit).
+
+### Link to Demo
+<!--
+Add the public link to your YouTube or video posted elsewhere.
+-->
+- A demo of this can be found on [Youtube]()
 
 ### Designed for the following users
 <!--
@@ -40,9 +46,50 @@ ParseCareKit synchronizes the following entities to Parse tables/classes using [
 **Use at your own risk. There is no promise that this is HIPAA compliant and we are not responsible for any mishandling of your data**
 
 <!--
-What features were added by you, this should be descriptions of features added from the [Coding]() part of the final. Feel free to add any figures that may help describe a feature. 
+What features were added by you, this should be descriptions of features added from the [Code](https://uk.instructure.com/courses/2030626/assignments/11151475) and [Demo](https://uk.instructure.com/courses/2030626/assignments/11151413) parts of the final. Feel free to add any figures that may help describe a feature. 
 -->
 ## Contributions/Features
+
+## Final Checklist
+<!--
+This is from the checkist from the final [Code](https://uk.instructure.com/courses/2030626/assignments/11151475). You should mark completed items with an x and leave non-completed items empty
+-->
+- [ ] Signup/Login screen tailored to app
+- [ ] Signup/Login with email address
+- [ ] Custom app logo
+- [ ] Custom styling
+- [ ] Add at least **5 new OCKTask/OCKHealthKitTasks** to your app
+  - [ ] Have a minimum of 7 OCKTask/OCKHealthKitTasks in your app
+  - [ ] 3/7 of OCKTasks should have different OCKSchedules than what's in the original app
+- [ ] Use at least 5/7 card below in your app
+  - [ ] InstructionsTaskView - typically used with a OCKTask
+  - [ ] SimpleTaskView - typically used with a OCKTask
+  - [ ] Checklist - typically used with a OCKTask
+  - [ ] Button Log - typically used with a OCKTask
+  - [ ] GridTaskView - typically used with a OCKTask
+  - [ ] NumericProgressTaskView (SwiftUI) - typically used with a OCKHealthKitTask
+  - [ ] LabeledValueTaskView (SwiftUI) - typically used with a OCKHealthKitTask
+- [ ] Add the LinkView (SwiftUI) card to your app
+- [ ] Replace the current TipView with a class with CustomFeaturedContentView that subclasses OCKFeaturedContentView. This card should have an initializer which takes any link
+- [ ] Tailor the ResearchKit Onboarding to reflect your application
+- [ ] Add tailored check-in ResearchKit survey to your app
+- [ ] Add a new tab called "Insights" to MainTabView
+- [ ] Replace current ContactView with Searchable contact view
+- [ ] Change the ProfileView to use a Form view
+- [ ] Add at least two OCKCarePlan's and tie them to their respective OCKTask's and OCContact's 
+
+## Wishlist features
+<!--
+Describe at least 3 features you want to add in the future before releasing your app in the app-store
+-->
+1. feature one
+2. feature two
+3. feature three
+
+## Challenges faced while developing
+<!--
+Describe any challenges you faced with learning Swift, your baseline app, or adding features. You can describe how you overcame them.
+-->
 
 ## Setup Your Parse Server
 
