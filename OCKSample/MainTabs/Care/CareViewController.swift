@@ -38,6 +38,8 @@ import CareKitUI
 import ResearchKit
 import os.log
 
+// swiftlint:disable type_body_length
+
 class CareViewController: OCKDailyPageViewController {
 
     private var isSyncing = false
@@ -222,6 +224,29 @@ class CareViewController: OCKDailyPageViewController {
     private func taskViewController(for task: OCKAnyTask,
                                     on date: Date) -> [UIViewController]? {
         switch task.id {
+        case TaskID.checkIn:
+            let checkInCard = OCKSurveyTaskViewController(
+                                taskID: TaskID.checkIn,
+                                eventQuery: OCKEventQuery(for: date),
+                                storeManager: self.storeManager,
+                                survey: Surveys.checkInSurvey(),
+                                viewSynchronizer: SurveyViewSynchronizer(),
+                                extractOutcome: Surveys.extractAnswersFromCheckInSurvey
+                            )
+            checkInCard.surveyDelegate = self
+
+            return [checkInCard]
+        case TaskID.rangeOfMotionCheck:
+            let checkInCard = OCKSurveyTaskViewController(
+                                taskID: TaskID.rangeOfMotionCheck,
+                                eventQuery: OCKEventQuery(for: date),
+                                storeManager: self.storeManager,
+                                survey: Surveys.rangeOfMotionCheck(),
+                                extractOutcome: Surveys.extractRangeOfMotionOutcome
+                            )
+            checkInCard.surveyDelegate = self
+
+            return [checkInCard]
         case TaskID.steps:
             let view = NumericProgressTaskView(
                 task: task,
@@ -341,14 +366,20 @@ class CareViewController: OCKDailyPageViewController {
 }
 
 extension CareViewController: OCKSurveyTaskViewControllerDelegate {
-    func surveyTask(
-            viewController: OCKSurveyTaskViewController,
-            for task: OCKAnyTask,
-            didFinish result: Result<ORKTaskViewControllerFinishReason, Error>) {
+    func surveyTask(viewController: OCKSurveyTaskViewController,
+                    for task: OCKAnyTask,
+                    didFinish result: Result<ORKTaskViewControllerFinishReason, Error>) {
 
         if case let .success(reason) = result, reason == .completed {
             reload()
         }
+    }
+
+    func surveyTask(
+        viewController: OCKSurveyTaskViewController,
+        shouldAllowDeletingOutcomeForEvent event: OCKAnyEvent) -> Bool {
+
+        event.scheduleEvent.start >= Calendar.current.startOfDay(for: Date())
     }
 }
 

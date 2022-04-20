@@ -64,6 +64,11 @@ enum Constants {
     static let userTypeKey = "userType"
 }
 
+enum CarePlanID: String {
+    case health
+    case checkIn
+}
+
 enum TaskID {
     static let doxylamine = "doxylamine"
     static let nausea = "nausea"
@@ -71,9 +76,11 @@ enum TaskID {
     static let kegels = "kegels"
     static let steps = "steps"
     static let onboarding = "onboarding"
+    static let checkIn = "checkIn"
+    static let rangeOfMotionCheck = "rangeOfMotionCheck"
 
     static var ordered: [String] {
-        [Self.steps, Self.doxylamine, Self.kegels, Self.stretch, Self.nausea]
+        [Self.steps, Self.checkIn, Self.rangeOfMotionCheck, Self.doxylamine, Self.kegels, Self.stretch, Self.nausea]
     }
 }
 
