@@ -51,10 +51,6 @@ class CustomContactViewController: OCKListViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                            target: self,
                                                            action: #selector(presentContactsListViewController))
-        guard User.current != nil else {
-            Logger.contact.error("User not logged in")
-            return
-        }
 
         Task {
             try? await fetchContacts()
@@ -86,6 +82,10 @@ class CustomContactViewController: OCKListViewController {
 
     @MainActor
     func fetchContacts() async throws {
+        guard User.current != nil else {
+            Logger.contact.error("User not logged in")
+            return
+        }
 
         var query = OCKContactQuery(for: Date())
         query.sortDescriptors.append(.familyName(ascending: true))
@@ -202,6 +202,11 @@ extension CustomContactViewController: CNContactPickerDelegate {
 
     @MainActor
     func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
+        guard User.current != nil else {
+            Logger.contact.error("User not logged in")
+            return
+        }
+
         let contactToAdd = convertDeviceContacts(contact)
 
         if !(self.allContacts.contains { $0.id == contactToAdd.id }) {
@@ -221,6 +226,11 @@ extension CustomContactViewController: CNContactPickerDelegate {
 
     @MainActor
     func contactPicker(_ picker: CNContactPickerViewController, didSelect contacts: [CNContact]) {
+        guard User.current != nil else {
+            Logger.contact.error("User not logged in")
+            return
+        }
+
         let newContacts = contacts.compactMap { convertDeviceContacts($0) }
 
         var contactsToAdd = [OCKAnyContact]()

@@ -19,8 +19,8 @@ struct ContactView: UIViewControllerRepresentable {
             Logger.contact.error("Couldn't unwrap storeManager")
             return UINavigationController()
         }
-        let contacts = CustomContactViewController(storeManager: manager)
-        return UINavigationController(rootViewController: contacts)
+        let contactViewController = CustomContactViewController(storeManager: manager)
+        return UINavigationController(rootViewController: contactViewController)
     }
 
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
