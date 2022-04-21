@@ -194,6 +194,7 @@ extension CustomContactViewController: OCKContactViewControllerDelegate {
     // swiftlint:disable:next line_length
     func contactViewController<C, VS>(_ viewController: CareKit.OCKContactViewController<C, VS>, didEncounterError error: Error) where C: CareKit.OCKContactController, VS: CareKit.OCKContactViewSynchronizerProtocol {
 
+        Logger.contact.error("\(error.localizedDescription)")
     }
 
 }
