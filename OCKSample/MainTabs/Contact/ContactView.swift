@@ -19,7 +19,7 @@ struct ContactView: UIViewControllerRepresentable {
             Logger.contact.error("Couldn't unwrap storeManager")
             return UINavigationController()
         }
-        let contacts = OCKContactsListViewController(storeManager: manager)
+        let contacts = CustomContactViewController(storeManager: manager)
         return UINavigationController(rootViewController: contacts)
     }
 
