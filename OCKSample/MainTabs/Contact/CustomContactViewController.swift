@@ -8,6 +8,7 @@
 
 import UIKit
 import CareKitStore
+import CareKitUI
 import CareKit
 import Contacts
 import ContactsUI
@@ -63,6 +64,15 @@ class CustomContactViewController: OCKListViewController {
         }
     }
 
+    override func appendViewController(_ viewController: UIViewController, animated: Bool) {
+        super.appendViewController(viewController, animated: animated)
+
+        // Make sure this contact card matches app style when possible
+        if let carekitView = viewController.view as? OCKView {
+            carekitView.customStyle = CustomStyleKey.defaultValue
+        }
+    }
+
     @objc private func presentContactsListViewController() {
 
         let contactPicker = CNContactPickerViewController()
@@ -100,7 +110,7 @@ class CustomContactViewController: OCKListViewController {
         }
 
         let filterdContacts = convertedContacts.filter {
-            // Modify this filter to not show the contact info for this user
+            // This filter removes the logged in users contact from the view.
             if $0.id == personUUIDString {
                 return false
             }
