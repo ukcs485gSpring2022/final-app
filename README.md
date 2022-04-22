@@ -10,11 +10,15 @@ Give a short description on what your project accomplishes and what tools is use
 -->
 An example application of [CareKit](https://github.com/carekit-apple/CareKit)'s OCKSample synchronizing CareKit data to the Cloud via [ParseCareKit](https://github.com/netreconlab/ParseCareKit).
 
-### Link to Demo
+### Demo Video
 <!--
 Add the public link to your YouTube or video posted elsewhere.
 -->
-- A demo of this can be found on [Youtube]()
+To learn more about this application, watch the video below:
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=mib_YioKAQQ
+" target="_blank"><img src="http://img.youtube.com/vi/mib_YioKAQQ/0.jpg" 
+alt="Sample demo video" width="240" height="180" border="10" /></a>
 
 ### Designed for the following users
 <!--
