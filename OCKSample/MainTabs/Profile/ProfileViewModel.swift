@@ -16,6 +16,8 @@ import UIKit
 import os.log
 import Combine
 
+// swiftlint:disable type_body_length
+
 class ProfileViewModel: ObservableObject {
 
     @Published var patient: OCKPatient?

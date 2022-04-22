@@ -79,6 +79,7 @@ extension OCKSynchronizedStoreManager {
             .filter { $0.contact.id == contact.id && categories.contains($0.category) }
             .map { $0.contact }
 
+        // swiftlint:disable:next line_length
         return fetchImmediately ? AnyPublisher(changePublisher.prepend(presentValuePublisher)) : AnyPublisher(changePublisher)
     }
 
