@@ -8,6 +8,7 @@
 
 import UIKit
 import CareKitStore
+import CareKitUI
 import CareKit
 import Contacts
 import ContactsUI
@@ -63,6 +64,15 @@ class CustomContactViewController: OCKListViewController {
         }
     }
 
+    override func appendViewController(_ viewController: UIViewController, animated: Bool) {
+        super.appendViewController(viewController, animated: animated)
+
+        // Make sure this contact card matches app style when possible
+        if let carekitView = viewController.view as? OCKView {
+            carekitView.customStyle = CustomStyleKey.defaultValue
+        }
+    }
+
     @objc private func presentContactsListViewController() {
 
         let contactPicker = CNContactPickerViewController()
@@ -74,10 +84,6 @@ class CustomContactViewController: OCKListViewController {
 
     @objc private func dismissViewController() {
         dismiss(animated: true, completion: nil)
-    }
-
-    func clearAndKeepSearchBar() {
-        clear()
     }
 
     @MainActor
@@ -94,26 +100,25 @@ class CustomContactViewController: OCKListViewController {
         let contacts = try await storeManager.store.fetchAnyContacts(query: query)
 
         guard let convertedContacts = contacts as? [OCKContact],
-              // swiftlint:disable:next line_length
-              let personUUIDString = UserDefaults.standard.object(forKey: Constants.parseRemoteClockIDKey) as? String else {
+              let personUUIDString = ProfileViewModel.getRemoteClockUUIDAfterLoginFromLocalStorage()?.uuidString else {
             return
         }
 
         let filterdContacts = convertedContacts.filter {
-            // Modify this filter to not show the contact info for this user
+            // This filter removes the logged in users contact from the view.
             if $0.id == personUUIDString {
                 return false
             }
             return true
         }
 
-        self.clearAndKeepSearchBar()
         self.allContacts = filterdContacts
         self.displayContacts(self.allContacts)
     }
 
     @MainActor
     func displayContacts(_ contacts: [OCKAnyContact]) {
+        self.clear()
         for contact in contacts {
             let contactViewController = OCKSimpleContactViewController(contact: contact,
                                                                        storeManager: storeManager)
@@ -162,12 +167,9 @@ extension CustomContactViewController: UISearchBarDelegate {
 
         if searchBar.text!.isEmpty {
             // Show all contacts
-            clearAndKeepSearchBar()
             displayContacts(allContacts)
             return
         }
-
-        clearAndKeepSearchBar()
 
         let filteredContacts = allContacts.filter { (contact: OCKAnyContact) -> Bool in
 
@@ -184,7 +186,6 @@ extension CustomContactViewController: UISearchBarDelegate {
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        clearAndKeepSearchBar()
         displayContacts(allContacts)
     }
 }
@@ -212,8 +213,6 @@ extension CustomContactViewController: CNContactPickerDelegate {
 
         if !(self.allContacts.contains { $0.id == contactToAdd.id }) {
 
-            // Note - once the functionality is added to edit a contact,
-            // and let the user potentially edit before the save
             Task {
                 do {
                     _ = try await storeManager.store.addAnyContact(contactToAdd)
