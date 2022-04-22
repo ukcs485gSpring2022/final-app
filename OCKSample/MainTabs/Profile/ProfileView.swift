@@ -17,9 +17,10 @@ import os.log
 struct ProfileView: View {
 
     @Environment(\.presentationMode) var presentationMode
-    @Environment(\.userProfileViewModel) var viewModel
+    // @Environment(\.userProfileViewModel) var viewModel
     @Environment(\.tintColor) private var tintColor
     @EnvironmentObject var userStatus: UserStatus
+    @EnvironmentObject var profileViewModel: ProfileViewModel
     @State var firstName = ""
     @State var lastName = ""
     @State var birthday = Calendar.current.date(byAdding: .year, value: -20, to: Date())!
@@ -32,10 +33,11 @@ struct ProfileView: View {
                 NavigationLink(isActive: $showContact,
                                destination: {
                     MyContactView()
+                        .navigationBarTitle("My Contact Card")
                 }) {
                     EmptyView()
                 }
-                if let image = viewModel.profileImage {
+                if let image = profileViewModel.profileImage {
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -81,7 +83,7 @@ struct ProfileView: View {
 
                     Task {
                         do {
-                            try await viewModel.saveProfile(firstName,
+                            try await profileViewModel.saveProfile(firstName,
                                                             last: lastName,
                                                             birth: birthday)
                         } catch {
@@ -104,7 +106,7 @@ struct ProfileView: View {
                 // a function as argument like we discussed in class)
                 Button(action: {
                     Task {
-                        await viewModel.logout()
+                        await profileViewModel.logout()
                     }
 
                 }, label: {
@@ -128,9 +130,9 @@ struct ProfileView: View {
                              })
         }
         .sheet(isPresented: $showingImagePicker) {
-            ImagePicker(image: viewModel.$profileUIImage)
+            ImagePicker(image: $profileViewModel.profileUIImage)
         }
-        .onReceive(viewModel.$patient, perform: { patient in
+        .onReceive(profileViewModel.$patient, perform: { patient in
             if let currentFirstName = patient?.name.givenName {
                 firstName = currentFirstName
             }
@@ -142,12 +144,12 @@ struct ProfileView: View {
             if let currentBirthday = patient?.birthday {
                 birthday = currentBirthday
             }
-        }).onReceive(viewModel.$isLoggedOut, perform: { value in
+        }).onReceive(profileViewModel.$isLoggedOut, perform: { value in
             if self.userStatus.isLoggedOut != value {
                 self.userStatus.check()
             }
         }).onAppear(perform: {
-            viewModel.refreshViewIfNeeded()
+            profileViewModel.refreshViewIfNeeded()
         })
     }
 }

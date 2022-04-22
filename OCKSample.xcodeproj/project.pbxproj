@@ -21,9 +21,10 @@
 		701230F12810894D003F5ECE /* CustomContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701230F02810894D003F5ECE /* CustomContactViewController.swift */; };
 		701230FD28122A22003F5ECE /* MyContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701230FC28122A22003F5ECE /* MyContactView.swift */; };
 		7012310028122A4E003F5ECE /* MyContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701230FF28122A4E003F5ECE /* MyContactViewModel.swift */; };
-		7012310328122B0F003F5ECE /* DetailedContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7012310228122B0F003F5ECE /* DetailedContactView.swift */; };
 		70123105281255BD003F5ECE /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70123104281255BD003F5ECE /* ImagePicker.swift */; };
 		70123107281262FF003F5ECE /* OCKBiologicalSex+Hashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70123106281262FF003F5ECE /* OCKBiologicalSex+Hashable.swift */; };
+		701231092812DC3B003F5ECE /* MyContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701231082812DC3B003F5ECE /* MyContactViewController.swift */; };
+		7012310B2812E24F003F5ECE /* ContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7012310A2812E24F003F5ECE /* ContactViewModel.swift */; };
 		70202EC12807333900CF73FB /* CareKit in Frameworks */ = {isa = PBXBuildFile; productRef = 70202EC02807333900CF73FB /* CareKit */; };
 		70202EC32807333900CF73FB /* CareKitFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 70202EC22807333900CF73FB /* CareKitFHIR */; };
 		70202EC52807333A00CF73FB /* CareKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 70202EC42807333A00CF73FB /* CareKitUI */; };
@@ -208,9 +209,10 @@
 		701230F02810894D003F5ECE /* CustomContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomContactViewController.swift; sourceTree = "<group>"; };
 		701230FC28122A22003F5ECE /* MyContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyContactView.swift; sourceTree = "<group>"; };
 		701230FF28122A4E003F5ECE /* MyContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyContactViewModel.swift; sourceTree = "<group>"; };
-		7012310228122B0F003F5ECE /* DetailedContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedContactView.swift; sourceTree = "<group>"; };
 		70123104281255BD003F5ECE /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		70123106281262FF003F5ECE /* OCKBiologicalSex+Hashable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OCKBiologicalSex+Hashable.swift"; sourceTree = "<group>"; };
+		701231082812DC3B003F5ECE /* MyContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyContactViewController.swift; sourceTree = "<group>"; };
+		7012310A2812E24F003F5ECE /* ContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewModel.swift; sourceTree = "<group>"; };
 		70202EC9280746E900CF73FB /* ResearchKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ResearchKit.xcodeproj; path = ResearchKit/ResearchKit.xcodeproj; sourceTree = "<group>"; };
 		70202ED52807529900CF73FB /* Surveys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surveys.swift; sourceTree = "<group>"; };
 		70308885258273D400FFABB6 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -356,19 +358,11 @@
 		701230FE28122A31003F5ECE /* MyContact */ = {
 			isa = PBXGroup;
 			children = (
-				7012310128122AF2003F5ECE /* ContactCards */,
 				701230FC28122A22003F5ECE /* MyContactView.swift */,
+				701231082812DC3B003F5ECE /* MyContactViewController.swift */,
 				701230FF28122A4E003F5ECE /* MyContactViewModel.swift */,
 			);
 			path = MyContact;
-			sourceTree = "<group>";
-		};
-		7012310128122AF2003F5ECE /* ContactCards */ = {
-			isa = PBXGroup;
-			children = (
-				7012310228122B0F003F5ECE /* DetailedContactView.swift */,
-			);
-			path = ContactCards;
 			sourceTree = "<group>";
 		};
 		70202ECA280746E900CF73FB /* Products */ = {
@@ -395,12 +389,12 @@
 		70308878258272CD00FFABB6 /* Care */ = {
 			isa = PBXGroup;
 			children = (
+				7036E4C3256E0A48006E9A3C /* CareView.swift */,
 				E7440E4E229477F7007AD30A /* CareViewController.swift */,
+				70F03ABA2789071400E5AFB4 /* CareViewModel.swift */,
+				70123068280830A1003F5ECE /* Consent.swift */,
 				701230E6280DE574003F5ECE /* Cards */,
 				701230DC280DDF3A003F5ECE /* Surveys */,
-				70123068280830A1003F5ECE /* Consent.swift */,
-				7036E4C3256E0A48006E9A3C /* CareView.swift */,
-				70F03ABA2789071400E5AFB4 /* CareViewModel.swift */,
 			);
 			path = Care;
 			sourceTree = "<group>";
@@ -420,6 +414,7 @@
 			isa = PBXGroup;
 			children = (
 				7036E4CD256E9A0C006E9A3C /* ContactView.swift */,
+				7012310A2812E24F003F5ECE /* ContactViewModel.swift */,
 				701230F02810894D003F5ECE /* CustomContactViewController.swift */,
 			);
 			path = Contact;
@@ -930,13 +925,14 @@
 				701230F12810894D003F5ECE /* CustomContactViewController.swift in Sources */,
 				70202ED62807529900CF73FB /* Surveys.swift in Sources */,
 				70123105281255BD003F5ECE /* ImagePicker.swift in Sources */,
+				701231092812DC3B003F5ECE /* MyContactViewController.swift in Sources */,
 				9169381D271B650700A634ED /* ColorStyle.swift in Sources */,
 				E72B2C0A226939E3009A9438 /* AppDelegate.swift in Sources */,
 				7036E4C4256E0A48006E9A3C /* CareView.swift in Sources */,
 				70F921B027CABED600368CEC /* LocalSyncSessionDelegate.swift in Sources */,
 				70123069280830A1003F5ECE /* Consent.swift in Sources */,
 				70F03A932786087800E5AFB4 /* OCKAnyEvent+CustomStringConvertable.swift in Sources */,
-				7012310328122B0F003F5ECE /* DetailedContactView.swift in Sources */,
+				7012310B2812E24F003F5ECE /* ContactViewModel.swift in Sources */,
 				918FDEC3271B4E950045A0EF /* TintColorKey.swift in Sources */,
 				7012310028122A4E003F5ECE /* MyContactViewModel.swift in Sources */,
 				70F03AA327860AFF00E5AFB4 /* OCKPatient+Parse.swift in Sources */,

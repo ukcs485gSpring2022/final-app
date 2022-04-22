@@ -18,6 +18,7 @@ struct CareView: UIViewControllerRepresentable {
 
     @ObservedObject var viewModel = CareViewModel()
 
+    @MainActor
     func makeUIViewController(context: Context) -> some UIViewController {
 
         let view = createCareView()

@@ -1,21 +1,18 @@
 //
-//  MyContactViewModel.swift
+//  ContactViewModel.swift
 //  OCKSample
 //
-//  Created by Corey Baker on 4/21/22.
+//  Created by Corey Baker on 4/22/22.
 //  Copyright © 2022 Network Reconnaissance Lab. All rights reserved.
 //
 
 import Foundation
-import CareKitStore
-import os.log
-import CareKit
 
 /*
- You should notice this looks like ContactViewModel.
+ You should notice this looks like CareViewModel.
 */
 
-class MyContactViewModel: ObservableObject {
+class ContactViewModel: ObservableObject {
     @Published var update = false
 
     init() {

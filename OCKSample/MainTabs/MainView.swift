@@ -79,6 +79,7 @@ struct MainView: View {
                 }
             }
         }
+        .environmentObject(profileViewModel)
         .environmentObject(userStatus)
         .statusBar(hidden: true)
         .accentColor(Color(tintColor))

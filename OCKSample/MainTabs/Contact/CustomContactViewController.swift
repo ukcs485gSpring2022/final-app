@@ -86,10 +86,6 @@ class CustomContactViewController: OCKListViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    func clearAndKeepSearchBar() {
-        clear()
-    }
-
     @MainActor
     func fetchContacts() async throws {
         guard User.current != nil else {
@@ -117,13 +113,13 @@ class CustomContactViewController: OCKListViewController {
             return true
         }
 
-        self.clearAndKeepSearchBar()
         self.allContacts = filterdContacts
         self.displayContacts(self.allContacts)
     }
 
     @MainActor
     func displayContacts(_ contacts: [OCKAnyContact]) {
+        self.clear()
         for contact in contacts {
             let contactViewController = OCKSimpleContactViewController(contact: contact,
                                                                        storeManager: storeManager)
@@ -172,12 +168,9 @@ extension CustomContactViewController: UISearchBarDelegate {
 
         if searchBar.text!.isEmpty {
             // Show all contacts
-            clearAndKeepSearchBar()
             displayContacts(allContacts)
             return
         }
-
-        clearAndKeepSearchBar()
 
         let filteredContacts = allContacts.filter { (contact: OCKAnyContact) -> Bool in
 
@@ -194,7 +187,6 @@ extension CustomContactViewController: UISearchBarDelegate {
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        clearAndKeepSearchBar()
         displayContacts(allContacts)
     }
 }

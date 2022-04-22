@@ -33,7 +33,7 @@ class ProfileViewModel: ObservableObject {
     }
     @Published public internal(set) var error: Error?
     @Published var profileImage: Image?
-    @State var profileUIImage = UIImage(systemName: "person.crop.circle") {
+    @Published var profileUIImage = UIImage(systemName: "person.crop.circle") {
         willSet {
             guard self.profileUIImage != newValue,
                 let inputImage = newValue else {
@@ -158,7 +158,8 @@ class ProfileViewModel: ObservableObject {
                 Logger.profile.error("Error: Couldn't find contact with id \"\(uuid)\". It's possible they have never been saved.")
                 return
             }
-            self.contact = currentContact
+            self.observeContact(currentContact)
+
             try? await fetchProfilePicture()
         } catch {
             // swiftlint:disable:next line_length
@@ -172,6 +173,16 @@ class ProfileViewModel: ObservableObject {
         storeManager?.publisher(forPatient: patient, categories: [.add, .update, .delete])
             .sink { [weak self] in
                 self?.patient = $0 as? OCKPatient
+            }
+            .store(in: &cancellables)
+    }
+
+    @MainActor
+    private func observeContact(_ contact: OCKContact) {
+
+        storeManager?.publisher(forContact: contact, categories: [.add, .update, .delete])
+            .sink { [weak self] in
+                self?.contact = $0 as? OCKContact
             }
             .store(in: &cancellables)
     }
