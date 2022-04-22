@@ -17,7 +17,6 @@ import os.log
 struct ProfileView: View {
 
     @Environment(\.presentationMode) var presentationMode
-    // @Environment(\.userProfileViewModel) var viewModel
     @Environment(\.tintColor) private var tintColor
     @EnvironmentObject var userStatus: UserStatus
     @EnvironmentObject var profileViewModel: ProfileViewModel
@@ -37,8 +36,8 @@ struct ProfileView: View {
                 }) {
                     EmptyView()
                 }
-                if let image = profileViewModel.profileImage {
-                    image
+                if let image = profileViewModel.profileUIImage {
+                    Image(uiImage: image)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 100, height: 100, alignment: .center)
@@ -158,5 +157,6 @@ struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         ProfileView()
             .environmentObject(UserStatus(isLoggedOut: false))
+            .environmentObject(ProfileViewModel())
     }
 }

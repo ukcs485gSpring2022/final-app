@@ -34,14 +34,13 @@ class ProfileViewModel: ObservableObject {
         }
     }
     @Published public internal(set) var error: Error?
-    @Published var profileImage: Image?
-    @Published var profileUIImage = UIImage(systemName: "person.crop.circle") {
+    @Published var profileUIImage = UIImage(systemName: "person.fill") {
         willSet {
             guard self.profileUIImage != newValue,
                 let inputImage = newValue else {
                 return
             }
-            profileImage = Image(uiImage: inputImage)
+
             if !settingProfilePictureForFirstTime {
                 guard var user = User.current?.mergeable,
                       let image = inputImage.jpegData(compressionQuality: 0.25) else {
@@ -118,11 +117,8 @@ class ProfileViewModel: ObservableObject {
             } catch {
                 Logger.profile.error("Couldn't fetch profile picture: \(error.localizedDescription).")
             }
-            self.settingProfilePictureForFirstTime = false
-
-        } else {
-            self.settingProfilePictureForFirstTime = false
         }
+        self.settingProfilePictureForFirstTime = false
     }
 
     @MainActor

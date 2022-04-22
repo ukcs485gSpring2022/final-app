@@ -377,11 +377,11 @@
 		703088772582727500FFABB6 /* MainTabs */ = {
 			isa = PBXGroup;
 			children = (
-				91693819271B64CB00A634ED /* Stylers */,
-				70308878258272CD00FFABB6 /* Care */,
 				7036E4D2256EBE35006E9A3C /* MainView.swift */,
+				70308878258272CD00FFABB6 /* Care */,
 				7030887D258272F400FFABB6 /* Contact */,
 				7030887C258272E700FFABB6 /* Profile */,
+				91693819271B64CB00A634ED /* Stylers */,
 			);
 			path = MainTabs;
 			sourceTree = "<group>";
