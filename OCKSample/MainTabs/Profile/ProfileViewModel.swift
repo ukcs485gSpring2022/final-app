@@ -23,6 +23,7 @@ class ProfileViewModel: ObservableObject {
     @Published var patient: OCKPatient?
     @Published var contact: OCKContact?
     @Published var sex: OCKBiologicalSex = .other("unspecified")
+    @Published var isShowingSaveAlert = false
     @Published var isLoggedOut = false {
         willSet {
             if newValue {
@@ -232,8 +233,24 @@ class ProfileViewModel: ObservableObject {
     }
 
     // MARK: User intentions
+
     @MainActor
-    func saveProfile(_ first: String, last: String, birth: Date) async throws {
+    func saveProfile(_ first: String,
+                     last: String,
+                     birth: Date,
+                     sex: OCKBiologicalSex,
+                     note: String) async throws {
+        
+        /*
+         ToDo: Be sure to this methods to save changes properly to OCKPatient.
+         */
+        guard let remoteUUID = Self.getRemoteClockUUIDAfterLoginFromLocalStorage()?.uuidString else {
+            Logger.profile.error("Error: The user currently isn't logged in")
+            isLoggedOut = true
+            return
+        }
+
+        isShowingSaveAlert = true // Make alert pop up for user.
 
         if var patientToUpdate = patient {
             // If there is a currentPatient that was fetched, check to see if any of the fields changed
@@ -255,6 +272,17 @@ class ProfileViewModel: ObservableObject {
                 patientToUpdate.birthday = birth
             }
 
+            if patient?.sex != sex {
+                patientHasBeenUpdated = true
+                patientToUpdate.sex = sex
+            }
+
+            let notes = [OCKNote(author: first, title: "my note", content: note)]
+            if patient?.notes != notes {
+                patientHasBeenUpdated = true
+                patientToUpdate.notes = notes
+            }
+
             if patientHasBeenUpdated {
                 let updated = try await storeManager?.store.updateAnyPatient(patientToUpdate)
                 Logger.profile.info("Successfully updated patient")
@@ -265,12 +293,6 @@ class ProfileViewModel: ObservableObject {
             }
 
         } else {
-            // swiftlint:disable:next line_length
-            guard let remoteUUID = UserDefaults.standard.object(forKey: Constants.parseRemoteClockIDKey) as? String else {
-                Logger.profile.error("Error: The user currently isn't logged in")
-                isLoggedOut = true
-                return
-            }
 
             var newPatient = OCKPatient(id: remoteUUID, givenName: first, familyName: last)
             newPatient.birthday = birth
@@ -282,10 +304,68 @@ class ProfileViewModel: ObservableObject {
                 return
             }
             self.patient = newPatient
+        }
+    }
+
+    @MainActor
+    func saveContact(_ street: String,
+                     city: String,
+                     state: String,
+                     zipcode: String) async throws {
+
+        /*
+         ToDo: Be sure to this methods to save changes properly to OCKContact.
+         */
+        
+        guard let remoteUUID = Self.getRemoteClockUUIDAfterLoginFromLocalStorage()?.uuidString else {
+            Logger.profile.error("Error: The user currently isn't logged in")
+            isLoggedOut = true
+            return
+        }
+
+        if var contactToUpdate = contact {
+            // If there is a currentContact that was fetched, check to see if any of the fields changed
+
+            var contactHasBeenUpdated = false
+
+            // Since OCKPatient was updated earlier, we should compare against this name
+            if let patientName = patient?.name,
+                contact?.name != patient?.name {
+                contactHasBeenUpdated = true
+                contactToUpdate.name = patientName
+            }
+
+            // Create a mutable temp address to compare
+            let potentialAddress = OCKPostalAddress()
+            potentialAddress.street = street
+            potentialAddress.city = city
+            potentialAddress.state = state
+            potentialAddress.postalCode = zipcode
+
+            if contact?.address != potentialAddress {
+                contactHasBeenUpdated = true
+                contactToUpdate.address = potentialAddress
+            }
+
+            if contactHasBeenUpdated {
+                let updated = try await storeManager?.store.updateAnyContact(contactToUpdate)
+                Logger.profile.info("Successfully updated contact")
+                guard let updatedContact = updated as? OCKContact else {
+                    return
+                }
+                self.contact = updatedContact
+            }
+
+        } else {
+
+            guard let patientName = self.patient?.name else {
+                Logger.profile.info("The patient didn't have a name.")
+                return
+            }
 
             // Added code to create a contact for the respective signed up user
             let newContact = OCKContact(id: remoteUUID,
-                                        name: newPatient.name,
+                                        name: patientName,
                                         carePlanUUID: nil)
 
             // This is new contact that has never been saved before

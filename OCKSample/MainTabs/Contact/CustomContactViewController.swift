@@ -100,8 +100,7 @@ class CustomContactViewController: OCKListViewController {
         let contacts = try await storeManager.store.fetchAnyContacts(query: query)
 
         guard let convertedContacts = contacts as? [OCKContact],
-              // swiftlint:disable:next line_length
-              let personUUIDString = UserDefaults.standard.object(forKey: Constants.parseRemoteClockIDKey) as? String else {
+              let personUUIDString = ProfileViewModel.getRemoteClockUUIDAfterLoginFromLocalStorage()?.uuidString else {
             return
         }
 

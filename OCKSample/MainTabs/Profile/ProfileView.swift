@@ -23,6 +23,13 @@ struct ProfileView: View {
     @State var firstName = ""
     @State var lastName = ""
     @State var birthday = Calendar.current.date(byAdding: .year, value: -20, to: Date())!
+    @State var note = ""
+    @State var sex = OCKBiologicalSex.other("unspecified")
+    @State private var sexOtherField = ""
+    @State private var street = ""
+    @State private var city = ""
+    @State private var state = ""
+    @State private var zipcode = ""
     @State var showContact = false
     @State var showingImagePicker = false
 
@@ -59,65 +66,81 @@ struct ProfileView: View {
                             self.showingImagePicker = true
                         }
                 }
-                VStack(alignment: .leading) {
-                    TextField("First Name", text: $firstName)
-                        .padding()
-                        .cornerRadius(20.0)
-                        .shadow(radius: 10.0, x: 20, y: 10)
 
-                    TextField("Last Name", text: $lastName)
-                        .padding()
-                        .cornerRadius(20.0)
-                        .shadow(radius: 10.0, x: 20, y: 10)
+                VStack {
+                    Form {
+                        Section(header: Text("About")) {
+                            TextField("First Name", text: $firstName)
+                            TextField("Last Name", text: $lastName)
+                            TextField("Note", text: $note)
+                            DatePicker("Birthday",
+                                       selection: $birthday,
+                                       displayedComponents: [DatePickerComponents.date])
 
-                    DatePicker("Birthday", selection: $birthday, displayedComponents: [DatePickerComponents.date])
-                        .padding()
-                        .cornerRadius(20.0)
-                        .shadow(radius: 10.0, x: 20, y: 10)
-                }
+                            Picker(selection: $sex, label: Text("Sex"), content: {
+                                Text(OCKBiologicalSex.female.rawValue).tag(OCKBiologicalSex.female)
+                                Text(OCKBiologicalSex.male.rawValue).tag(OCKBiologicalSex.male)
+                                TextField("Other", text: $sexOtherField).tag(OCKBiologicalSex.other(sexOtherField))
+                            })
+                        }
 
-                // Notice that "action" is a closure (which is essentially
-                // a function as argument like we discussed in class)
-                Button(action: {
-
-                    Task {
-                        do {
-                            try await profileViewModel.saveProfile(firstName,
-                                                            last: lastName,
-                                                            birth: birthday)
-                        } catch {
-                            Logger.profile.error("Error saving profile: \(error.localizedDescription)")
+                        Section(header: Text("Contact")) {
+                            TextField("Street", text: $street)
+                            TextField("City", text: $city)
+                            TextField("State", text: $state)
+                            TextField("Postal code", text: $zipcode)
                         }
                     }
 
-                }, label: {
+                    // Notice that "action" is a closure (which is essentially
+                    // a function as argument like we discussed in class)
+                    Button(action: {
 
-                    Text("Save Profile")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(width: 300, height: 50)
-                })
-                .background(Color(.green))
-                .cornerRadius(15)
+                        Task {
+                            do {
+                                try await profileViewModel.saveProfile(firstName,
+                                                                       last: lastName,
+                                                                       birth: birthday,
+                                                                       sex: sex,
+                                                                       note: note)
+                                try await profileViewModel.saveContact(street,
+                                                                       city: city,
+                                                                       state: state,
+                                                                       zipcode: zipcode)
+                            } catch {
+                                Logger.profile.error("Error saving profile: \(error.localizedDescription)")
+                            }
+                        }
 
-                // Notice that "action" is a closure (which is essentially
-                // a function as argument like we discussed in class)
-                Button(action: {
-                    Task {
-                        await profileViewModel.logout()
-                    }
+                    }, label: {
 
-                }, label: {
+                        Text("Save Profile")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(width: 300, height: 50)
+                    })
+                    .background(Color(.green))
+                    .cornerRadius(15)
 
-                    Text("Log Out")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(width: 300, height: 50)
-                })
-                .background(Color(.red))
-                .cornerRadius(15)
+                    // Notice that "action" is a closure (which is essentially
+                    // a function as argument like we discussed in class)
+                    Button(action: {
+                        Task {
+                            await profileViewModel.logout()
+                        }
+
+                    }, label: {
+
+                        Text("Log Out")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(width: 300, height: 50)
+                    })
+                    .background(Color(.red))
+                    .cornerRadius(15)
+                }
 
                 Spacer()
             }
@@ -132,6 +155,7 @@ struct ProfileView: View {
             ImagePicker(image: $profileViewModel.profileUIImage)
         }
         .onReceive(profileViewModel.$patient, perform: { patient in
+            // ToDo: Be sure to update this list so changes are reflected in the view.
             if let currentFirstName = patient?.name.givenName {
                 firstName = currentFirstName
             }
@@ -143,7 +167,39 @@ struct ProfileView: View {
             if let currentBirthday = patient?.birthday {
                 birthday = currentBirthday
             }
-        }).onReceive(profileViewModel.$isLoggedOut, perform: { value in
+
+            if let currentNote = patient?.notes?.first?.content {
+                note = currentNote
+            }
+
+            if let currentSex = patient?.sex {
+                sex = currentSex
+            }
+        })
+        .onReceive(profileViewModel.$contact, perform: { contact in
+            // ToDo: Be sure to update this list so changes are reflected in the view.
+            if let currentStreet = contact?.address?.street {
+                street = currentStreet
+            }
+            if let currentCity = contact?.address?.city {
+                city = currentCity
+            }
+            if let currentState = contact?.address?.state {
+                state = currentState
+            }
+            if let currentZipcode = contact?.address?.postalCode {
+                zipcode = currentZipcode
+            }
+        })
+        .alert(isPresented: $profileViewModel.isShowingSaveAlert) {
+            return Alert(title: Text("Update"),
+                         message: Text("All changs saved successfully!"),
+                         dismissButton: .default(Text("Ok"), action: {
+                            profileViewModel.isShowingSaveAlert = false
+                            self.presentationMode.wrappedValue.dismiss()
+                         }))
+        }
+        .onReceive(profileViewModel.$isLoggedOut, perform: { value in
             if self.userStatus.isLoggedOut != value {
                 self.userStatus.check()
             }

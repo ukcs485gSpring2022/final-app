@@ -65,8 +65,7 @@ class MyContactViewController: OCKListViewController {
     func fetchContacts() async throws {
 
         guard User.current != nil,
-              // swiftlint:disable:next line_length
-              let personUUIDString = UserDefaults.standard.object(forKey: Constants.parseRemoteClockIDKey) as? String else {
+              let personUUIDString = ProfileViewModel.getRemoteClockUUIDAfterLoginFromLocalStorage()?.uuidString else {
             Logger.myContact.error("User not logged in")
             self.contacts.removeAll()
             return
