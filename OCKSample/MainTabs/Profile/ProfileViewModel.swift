@@ -242,7 +242,7 @@ class ProfileViewModel: ObservableObject {
                      note: String) async throws {
 
         /*
-         ToDo: Be sure to this methods to save changes properly to OCKPatient.
+         TODO: Be sure to this methods to save changes properly to OCKPatient.
          */
         guard let remoteUUID = Self.getRemoteClockUUIDAfterLoginFromLocalStorage()?.uuidString else {
             Logger.profile.error("Error: The user currently isn't logged in")
@@ -314,7 +314,7 @@ class ProfileViewModel: ObservableObject {
                      zipcode: String) async throws {
 
         /*
-         ToDo: Be sure to this methods to save changes properly to OCKContact.
+         TODO: Be sure to this methods to save changes properly to OCKContact.
          */
 
         guard let remoteUUID = Self.getRemoteClockUUIDAfterLoginFromLocalStorage()?.uuidString else {

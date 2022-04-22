@@ -213,8 +213,6 @@ extension CustomContactViewController: CNContactPickerDelegate {
 
         if !(self.allContacts.contains { $0.id == contactToAdd.id }) {
 
-            // Note - once the functionality is added to edit a contact,
-            // and let the user potentially edit before the save
             Task {
                 do {
                     _ = try await storeManager.store.addAnyContact(contactToAdd)

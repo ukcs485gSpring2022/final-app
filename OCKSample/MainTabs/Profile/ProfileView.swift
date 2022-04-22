@@ -155,7 +155,7 @@ struct ProfileView: View {
             ImagePicker(image: $profileViewModel.profileUIImage)
         }
         .onReceive(profileViewModel.$patient, perform: { patient in
-            // ToDo: Be sure to update this list so changes are reflected in the view.
+            // TODO: Be sure to update this list so changes are reflected in the view.
             if let currentFirstName = patient?.name.givenName {
                 firstName = currentFirstName
             } else {
@@ -191,7 +191,7 @@ struct ProfileView: View {
             }
         })
         .onReceive(profileViewModel.$contact, perform: { contact in
-            // ToDo: Be sure to update this list so changes are reflected in the view.
+            // TODO: Be sure to update this list so changes are reflected in the view.
             if let currentStreet = contact?.address?.street {
                 street = currentStreet
             } else {
@@ -203,7 +203,7 @@ struct ProfileView: View {
             } else {
                 city = ""
             }
-            
+
             if let currentState = contact?.address?.state {
                 state = currentState
             } else {
