@@ -16,7 +16,15 @@ import ParseCareKit
 
 extension OCKStore {
 
-    func addCarePlansIfNotPresent(_ carePlans: [OCKCarePlan]) async throws {
+    /**
+     Adds an `OCKCarePlan`*asynchronously*  to `OCKStore` if it has not been added already.
+
+     - parameter carePlans: The array of `OCKCarePlan`'s to be added to the `OCKStore`.
+     - parameter patientUUID: The uuid of the `OCKPatient` to tie to the `OCKCarePlan`. Defaults to nil.
+     - throws: An error if there was a problem adding the missing `OCKCarePlan`'s.
+     - note: `OCKCarePlan`'s that have an existing `id` will not be added and will not cause errors to be thrown.
+    */
+    func addCarePlansIfNotPresent(_ carePlans: [OCKCarePlan], patientUUID: UUID? = nil) async throws {
         let carePlanIdsToAdd = carePlans.compactMap { $0.id }
 
         // Prepare query to see if Care Plan are already added
@@ -29,7 +37,9 @@ extension OCKStore {
         // Check results to see if there's a missing Care Plan
         carePlans.forEach { potentialCarePlan in
             if foundCarePlans.first(where: { $0.id == potentialCarePlan.id }) == nil {
-                carePlanNotInStore.append(potentialCarePlan)
+                var mutableCarePlan = potentialCarePlan
+                mutableCarePlan.patientUUID = patientUUID
+                carePlanNotInStore.append(mutableCarePlan)
             }
         }
 
@@ -72,7 +82,7 @@ extension OCKStore {
         }
     }
 
-    func addContactsIfNotPresent(_ contacts: [OCKContact]) async throws {
+    func addContactsIfNotPresent(_ contacts: [OCKContact], carePlanUUID: UUID? = nil) async throws {
         let contactIdsToAdd = contacts.compactMap { $0.id }
 
         // Prepare query to see if contacts are already added
@@ -85,7 +95,9 @@ extension OCKStore {
         // Check results to see if there's a missing task
         contacts.forEach { potential in
             if foundContacts.first(where: { $0.id == potential.id }) == nil {
-                contactsNotInStore.append(potential)
+                var mutableContact = potential
+                mutableContact.carePlanUUID = carePlanUUID
+                contactsNotInStore.append(mutableContact)
             }
         }
 
@@ -100,17 +112,13 @@ extension OCKStore {
         }
     }
 
-    func populateCarePlans() async throws {
-        // Get patient from local database if available
-        guard let uuid = ProfileViewModel.getRemoteClockUUIDAfterLoginFromLocalStorage() else {
-            throw AppError.remoteClockIDNotAvailable
-        }
-        let patient = try await fetchPatient(withID: uuid.uuidString)
+    func populateCarePlans(patientUUID: UUID? = nil) async throws {
 
         let checkInCarePlan = OCKCarePlan(id: CarePlanID.checkIn.rawValue,
                                           title: "Check in Care Plan",
-                                          patientUUID: patient.uuid)
-        try await addCarePlansIfNotPresent([checkInCarePlan])
+                                          patientUUID: nil)
+
+        try await addCarePlansIfNotPresent([checkInCarePlan], patientUUID: patientUUID)
     }
 
     @MainActor
@@ -134,8 +142,8 @@ extension OCKStore {
     }
 
     // Adds tasks and contacts into the store
-    func populateSampleData() async throws {
-        try await populateCarePlans()
+    func populateSampleData(_ patientUUID: UUID? = nil) async throws {
+        try await populateCarePlans(patientUUID: patientUUID)
         let carePlanUUIDs = try await Self.getCarePlanUUIDs()
 
         let thisMorning = Calendar.current.startOfDay(for: Date())

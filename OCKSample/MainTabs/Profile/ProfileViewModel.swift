@@ -240,7 +240,7 @@ class ProfileViewModel: ObservableObject {
                      birth: Date,
                      sex: OCKBiologicalSex,
                      note: String) async throws {
-        
+
         /*
          ToDo: Be sure to this methods to save changes properly to OCKPatient.
          */
@@ -316,7 +316,7 @@ class ProfileViewModel: ObservableObject {
         /*
          ToDo: Be sure to this methods to save changes properly to OCKContact.
          */
-        
+
         guard let remoteUUID = Self.getRemoteClockUUIDAfterLoginFromLocalStorage()?.uuidString else {
             Logger.profile.error("Error: The user currently isn't logged in")
             isLoggedOut = true
@@ -411,8 +411,8 @@ class ProfileViewModel: ObservableObject {
         // This is new contact that has never been saved before
         _ = try await storeManager.store.addAnyContact(newContact)
 
-        try await appDelegate.store?.populateSampleData()
-        try await appDelegate.healthKitStore.populateSampleData()
+        try await appDelegate.store?.populateSampleData(patient.uuid)
+        try await appDelegate.healthKitStore.populateSampleData(patient.uuid)
         appDelegate.parseRemote.automaticallySynchronizes = true
 
         // Post notification to sync
