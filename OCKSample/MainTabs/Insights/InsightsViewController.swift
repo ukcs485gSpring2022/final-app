@@ -6,6 +6,11 @@
 //  Copyright © 2022 Network Reconnaissance Lab. All rights reserved.
 //
 
+/*
+ You should notice this looks like CareView and MyContactView combined,
+ but only shows charts instead.
+*/
+
 import UIKit
 import CareKitStore
 import CareKitUI
@@ -35,6 +40,8 @@ class InsightsViewController: OCKListViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        navigationItem.title = "Insights"
 
         Task {
             await displayTasks(Date())
