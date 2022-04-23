@@ -38,8 +38,6 @@ import CareKitUI
 import ResearchKit
 import os.log
 
-// swiftlint:disable type_body_length
-
 class CareViewController: OCKDailyPageViewController {
 
     private var isSyncing = false
@@ -278,41 +276,6 @@ class CareViewController: OCKDailyPageViewController {
 
         case TaskID.nausea:
             var cards = [UIViewController]()
-            // dynamic gradient colors
-            let nauseaGradientStart = UIColor { traitCollection -> UIColor in
-                return traitCollection.userInterfaceStyle == .light ? #colorLiteral(red: 0.06253327429, green: 0.6597633362, blue: 0.8644603491, alpha: 1) : #colorLiteral(red: 0, green: 0.2858072221, blue: 0.6897063851, alpha: 1)
-            }
-            let nauseaGradientEnd = UIColor { traitCollection -> UIColor in
-                return traitCollection.userInterfaceStyle == .light ? #colorLiteral(red: 0, green: 0.2858072221, blue: 0.6897063851, alpha: 1) : #colorLiteral(red: 0.06253327429, green: 0.6597633362, blue: 0.8644603491, alpha: 1)
-            }
-
-            // Create a plot comparing nausea to medication adherence.
-            let nauseaDataSeries = OCKDataSeriesConfiguration(
-                taskID: "nausea",
-                legendTitle: "Nausea",
-                gradientStartColor: nauseaGradientStart,
-                gradientEndColor: nauseaGradientEnd,
-                markerSize: 10,
-                eventAggregator: OCKEventAggregator.countOutcomeValues)
-
-            let doxylamineDataSeries = OCKDataSeriesConfiguration(
-                taskID: "doxylamine",
-                legendTitle: "Doxylamine",
-                gradientStartColor: .systemGray2,
-                gradientEndColor: .systemGray,
-                markerSize: 10,
-                eventAggregator: OCKEventAggregator.countOutcomeValues)
-
-            let insightsCard = OCKCartesianChartViewController(
-                plotType: .bar,
-                selectedDate: date,
-                configurations: [nauseaDataSeries, doxylamineDataSeries],
-                storeManager: self.storeManager)
-
-            insightsCard.chartView.headerView.titleLabel.text = "Nausea & Doxylamine Intake"
-            insightsCard.chartView.headerView.detailLabel.text = "This Week"
-            insightsCard.chartView.headerView.accessibilityLabel = "Nausea & Doxylamine Intake, This Week"
-            cards.append(insightsCard)
 
             // Also create a card that displays a single event.
             // The event query passed into the initializer specifies that only
