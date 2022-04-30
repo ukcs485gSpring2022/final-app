@@ -33,12 +33,13 @@ class CustomFeaturedContentView: OCKFeaturedContentView {
 /// Need to conform to delegate in order to be delegated to.
 extension CustomFeaturedContentView: OCKFeaturedContentViewDelegate {
 
-    @MainActor
     func didTapView(_ view: OCKFeaturedContentView) {
         // When tapped open a URL.
         guard let url = url else {
             return
         }
-        UIApplication.shared.open(url)
+        DispatchQueue.main.async {
+            UIApplication.shared.open(url)
+        }
     }
 }
